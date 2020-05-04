@@ -1,5 +1,3 @@
-#include <Arduino.h>
-
 #define D4 294
 #define G4 392
 #define A4 440
@@ -17,29 +15,6 @@ int passoAtual = 0;
 
 int botaoPress = 0;
 boolean perdeu = false;
-
-void reproduzirSequencia(){
-  int i = 0;
-  while(i < rodadaAtual){
-    delay(400);
-    tone(buzzer, sons[sequencia[i]]);
-    digitalWrite(leds[sequencia[i]],HIGH);
-    delay(400);
-    noTone(buzzer);
-    digitalWrite(leds[sequencia[i]],LOW);
-    delay(400);
-
-    i++;
-  }
-
-}
-
-void proximaRodada(){
-  int numero = random(0,4);
-  sequencia[rodadaAtual] = numero;
-  Serial.println(sequencia[rodadaAtual]);
-  rodadaAtual = rodadaAtual + 1;
-}
 
 void gameOver(){
 
@@ -81,6 +56,57 @@ int verificaBotao(){
   }
 }
 
+void startTrack(){
+  tone(buzzer, sons[0]);
+  digitalWrite(leds[0], HIGH);
+  digitalWrite(leds[1], HIGH);
+  digitalWrite(leds[2], HIGH);
+  digitalWrite(leds[3], HIGH);
+  delay(500);
+  digitalWrite(leds[0], LOW);
+  digitalWrite(leds[1], LOW);
+  digitalWrite(leds[2], LOW);
+  digitalWrite(leds[3], LOW);
+  delay(500);
+  noTone(buzzer);
+}
+
+void setup() {
+  Serial.begin();
+
+  int i = 0;
+  while(i < 4){
+    pinMode(led[i],OUTPUT);
+    pinMode(botoes[i],INPUT);
+
+    i++;
+  }
+
+  pinMode(buzzer,OUTPUT);
+  randomSeed(analogRead(0));
+}
+
+void proximaRodada(){
+  int numero = random(0,4);
+  sequencia[rodadaAtual] = numero;
+  Serial.println(sequencia[rodadaAtual]);
+  rodadaAtual = rodadaAtual + 1;
+}
+
+void reproduzirSequencia(){
+  int i = 0;
+  while(i < rodadaAtual){
+    tone(buzzer,sons[sequencia[i]]);
+    digitalWrite(leds[sequencia[i]],HIGH);
+    delay(400);
+    noTone(buzzer);
+    digitalWrite(leds[sequencia[i]], LOW);
+    delay(400);
+
+    i++;
+  }
+}
+
 void esperaJogador(){
   int i = 0;
   while(i < rodadaAtual && !perdeu){
@@ -98,52 +124,30 @@ void esperaJogador(){
 
     passoAtual++;
     i++;
+    
   }
 
   perdeu = false;
   passoAtual = 0;
 }
 
-void startTrack(){
-  tone(buzzer, sons[0]);
-  digitalWrite(leds[0], HIGH);
-  digitalWrite(leds[1], HIGH);
-  digitalWrite(leds[2], HIGH);
-  digitalWrite(leds[3], HIGH);
-  delay(500);
-  digitalWrite(leds[0], LOW);
-  digitalWrite(leds[1], LOW);
-  digitalWrite(leds[2], LOW);
-  digitalWrite(leds[3], LOW);
-  delay(500);
-  noTone(buzzer);
-}
 
-void setup() {
 
-  Serial.begin(9600);
 
-  int i = 0;
-  while(i < 4){
-    pinMode(leds[i],OUTPUT);
-    pinMode(botoes[i],INPUT);
 
-    i++;
-  }
 
-  pinMode(buzzer,OUTPUT);
-  randomSeed(analogRead(0));
-}
+
+
+
+
 
 void loop() {
-
   if(rodadaAtual == 0){
     startTrack();
-    delay(500);
   }
 
   proximaRodada();
   reproduzirSequencia();
   esperaJogador();
-  
+ 
 }

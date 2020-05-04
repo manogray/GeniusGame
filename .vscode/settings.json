@@ -1,0 +1,6 @@
+{
+    "terminal.integrated.env.linux": {
+        "PATH": "/home/manogray/.platformio/penv/bin:/home/manogray/.platformio/penv:/home/manogray/.sdkman/candidates/grails/current/bin:/home/manogray/.nvm/versions/node/v12.10.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/java-8-openjdk-amd64:/usr/lib/jvm/java-8-openjdk-amd64/jre:/snap/bin",
+        "PLATFORMIO_CALLER": "vscode"
+    }
+}
